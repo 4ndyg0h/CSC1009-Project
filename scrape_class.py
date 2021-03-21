@@ -150,11 +150,11 @@ class Scape:
                 -------
                 reddit (class) : class to allow reddit search and scrape
         """
-        reddit = praw.Reddit(client_id='xD6YrdOujyA8Aw',
-                             client_secret='2EODniKIdpLjhfQfY3Iw3VFjGDl5ng',
-                             password='praw.oop.1009',
-                             user_agent='hi',
-                             username='BottleWarm151'
+        reddit = praw.Reddit(client_id='xxxx',
+                             client_secret='xxxx',
+                             password='xxxx',
+                             user_agent='xxxx',
+                             username='xxxx'
                              )
         return reddit
 
