@@ -17,6 +17,7 @@ These are the modules required to be installed in order to excute the program.
    1. [Visit here](https://sites.google.com/a/chromium.org/chromedriver/downloads) and download chrome driver with the same version as your Chrome
    1. Once the zip file is downloaded for the operating system, unzip it to retrieve the chromedriver.exe executable file. Copy this file to a specific location of your choice.
    1. Now copy the path where the ChromeDriver file is saved to set the system properties in environment variables.
+   1. Follow the [link](https://www.browserstack.com/guide/run-selenium-tests-using-selenium-chromedriver) for more detailed explaination
 1. matplotlib
    1. CMD command to install: `python -m pip install matplotlib`
 1. requests
