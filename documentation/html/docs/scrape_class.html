@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>scrape_class module &mdash; ExchangeRate API  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ExchangeRate API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">scrape_class module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ExchangeRate API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>scrape_class module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/docs/scrape_class.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-scrape_class">
+<span id="scrape-class-module"></span><h1>scrape_class module<a class="headerlink" href="#module-scrape_class" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="scrape_class.Scape">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">scrape_class.</span></code><code class="sig-name descname"><span class="pre">Scape</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scrape_class.html#Scape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scrape_class.Scape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to represent scrape data.</p>
+<p>…</p>
+<dl class="py attribute">
+<dt id="scrape_class.Scape.url">
+<code class="sig-name descname"><span class="pre">url</span></code><a class="headerlink" href="#scrape_class.Scape.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>webpage to scrape</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">xrate_data():</span></code></dt>
+<dd><p>Return scrape data of all the currency rate from x-rates.com</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">currencyCode():</span></code></dt>
+<dd><p>Return scrape data of the currency and code from currencysystem.com/codes/</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">tweets(sample):</span></code></dt>
+<dd><p>Return scrape tweets and date</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">reddit():</span></code></dt>
+<dd><p>Return the reddit account information to allow search</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">cashchanger():</span></code></dt>
+<dd><p>Return the currency code, highest sell price and href link from cashchanger.co/singapore#buyrates</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="scrape_class.Scape.cashchanger">
+<code class="sig-name descname"><span class="pre">cashchanger</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scrape_class.html#Scape.cashchanger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scrape_class.Scape.cashchanger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the currency code, highest sell price and reference link to scrape more data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>content (Multi-Dimension Array)</strong> (<em>Array that store all the currency array, highestsellPrice array and</em>)</p></li>
+<li><p><em>reference link array</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="scrape_class.Scape.currencyCode">
+<code class="sig-name descname"><span class="pre">currencyCode</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scrape_class.html#Scape.currencyCode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scrape_class.Scape.currencyCode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the currency name and the corresponding code</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>code_dict (dictionary)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dictionary of it currency name and currency code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="scrape_class.Scape.reddit">
+<code class="sig-name descname"><span class="pre">reddit</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scrape_class.html#Scape.reddit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scrape_class.Scape.reddit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return reddit authentication to allow reddit search and scrape</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>reddit (class)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>class to allow reddit search and scrape</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="scrape_class.Scape.tweets">
+<code class="sig-name descname"><span class="pre">tweets</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scrape_class.html#Scape.tweets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scrape_class.Scape.tweets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the tweets scraped out</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sample</strong> (<em>int</em>) – The number of tweets to be scrape out</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tweet_dict (dictionary)</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dictionary of tweets and posted date</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="scrape_class.Scape.xrate_data">
+<code class="sig-name descname"><span class="pre">xrate_data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scrape_class.html#Scape.xrate_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scrape_class.Scape.xrate_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the scrape the data from x-rates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>exchange_rate (dictionary)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dictionary of the currency name and rate</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, 1009 P3.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

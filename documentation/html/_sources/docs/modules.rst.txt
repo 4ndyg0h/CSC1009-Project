@@ -1,0 +1,13 @@
+Done
+====
+
+.. toctree::
+   :maxdepth: 4
+
+   generateRate
+   gui
+   readCsv_class
+   reddit
+   scrapeCC
+   scrape_class
+   twitter

@@ -1,0 +1,501 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>readCsv_class module &mdash; ExchangeRate API  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ExchangeRate API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">readCsv_class module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ExchangeRate API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>readCsv_class module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/docs/readCsv_class.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-readCsv_class">
+<span id="readcsv-class-module"></span><h1>readCsv_class module<a class="headerlink" href="#module-readCsv_class" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="readCsv_class.Index">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">readCsv_class.</span></code><code class="sig-name descname"><span class="pre">Index</span></code><a class="reference internal" href="../_modules/readCsv_class.html#Index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.Index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="readCsv_class.Index.getIndex">
+<code class="sig-name descname"><span class="pre">getIndex</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#Index.getIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.Index.getIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the first index and last index of the column date based on selected month</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>array</em>) – list of dataset in csv file</p></li>
+<li><p><strong>month</strong> (<em>str</em>) – to filter out the column name based on the month</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>index1 (int)</strong> (<em>first index of the same date of the month</em>)</p></li>
+<li><p><strong>index2 (int)</strong> (<em>last index of the same date of the month</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="readCsv_class.ReadCSV">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">readCsv_class.</span></code><code class="sig-name descname"><span class="pre">ReadCSV</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">choice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to read csv file.</p>
+<p>…</p>
+<dl class="py attribute">
+<dt id="readCsv_class.ReadCSV.choice">
+<code class="sig-name descname"><span class="pre">choice</span></code><a class="headerlink" href="#readCsv_class.ReadCSV.choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>the currency code to read from</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">currency_option():</span></code></dt>
+<dd><p>Return all the currency code</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">get_current():</span></code></dt>
+<dd><p>Return the current currency rate of the choice read from csv file generated</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">get_max():</span></code></dt>
+<dd><p>Return the maximum rate of the choice from csv file generated</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">get_min():</span></code></dt>
+<dd><p>Return the minimum rate of the choice from csv file generated</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">get_avg():</span></code></dt>
+<dd><p>Return the average rate of the choice from csv file generated</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">buy():</span></code></dt>
+<dd><p>Return the best location to buy the currency with the rate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">past_record():</span></code></dt>
+<dd><p>Return all the record of the currency</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">read_tweets(month):</span></code></dt>
+<dd><p>Return the tweet based on the month and choice</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">reddit_dict(month):</span></code></dt>
+<dd><p>Return the reddit post based on the month and choice</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">analyse_reddit():</span></code></dt>
+<dd><p>Return the percentage of the currency raising</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">pastDailyRecord(month):</span></code></dt>
+<dd><p>Return all the daily record of the rate based on the currency choice</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">readX(month):</span></code></dt>
+<dd><p>Return the list of the date based on selected month</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.analyse_reddit">
+<code class="sig-name descname"><span class="pre">analyse_reddit</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.analyse_reddit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.analyse_reddit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyse reddit posts and determine the chances of the currency rate rising</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>percentage (float)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Float of the percentage of the currency rising in 2 decimal places</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.buy">
+<code class="sig-name descname"><span class="pre">buy</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.buy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.buy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the best location to buy the currency and the rate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>info (array)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Array of the location and the rate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.currency_option">
+<code class="sig-name descname"><span class="pre">currency_option</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.currency_option"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.currency_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the currecny code in the csv file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>currency (array)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Array of the currency code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.get_avg">
+<code class="sig-name descname"><span class="pre">get_avg</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.get_avg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.get_avg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the average rate of the currency choice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>mean (float)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Float of the average rate rounded up to 4 decimal places</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.get_current">
+<code class="sig-name descname"><span class="pre">get_current</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.get_current"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.get_current" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current rate of the currency choice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>current (float)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Float of the current rate rounded up to 4 decimal places</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.get_max">
+<code class="sig-name descname"><span class="pre">get_max</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.get_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.get_max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the maximum rate of the currency choice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>max (float)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Float of the maximum rate rounded up to 4 decimal places</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.get_min">
+<code class="sig-name descname"><span class="pre">get_min</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.get_min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.get_min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the minimum rate of the currency choice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>min (float)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Float of the minimum rate rounded up to 4 decimal places</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.pastDaily_record">
+<code class="sig-name descname"><span class="pre">pastDaily_record</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">month</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.pastDaily_record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.pastDaily_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the record of the rate based on the currency choice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>month</strong> (<em>str</em>) – to filter out the daily rate based on the month</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>record (array)</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Array of the historical rate for the selected month</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.past_record">
+<code class="sig-name descname"><span class="pre">past_record</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.past_record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.past_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the record of the rate based on the currency choice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>record (array)</strong></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Array of all the record</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.readX">
+<code class="sig-name descname"><span class="pre">readX</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">month</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.readX"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.readX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of the date based on selected month</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>month</strong> (<em>str</em>) – to filter out the column name based on the month</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>name (array)</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Array of the date for the selected month</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.read_tweets">
+<code class="sig-name descname"><span class="pre">read_tweets</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">month</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.read_tweets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.read_tweets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return tweets and post date based on the currency choice and month</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>month</strong> (<em>str</em>) – to filter out the tweet based on the month</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tweet_dict (dictionary)</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dictionary of the tweets and post date after filtering</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="readCsv_class.ReadCSV.reddit_dict">
+<code class="sig-name descname"><span class="pre">reddit_dict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">month</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/readCsv_class.html#ReadCSV.reddit_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#readCsv_class.ReadCSV.reddit_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return top 3 reddit news posts and post date based on the currency choice and month</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>month</strong> (<em>str</em>) – to filter out the tweet based on the month</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>reddit_dict (dictionary)</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dictionary of the reddit posts and post date after filtering</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, 1009 P3.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

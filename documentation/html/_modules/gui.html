@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gui &mdash; ExchangeRate API  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ExchangeRate API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ExchangeRate API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>gui</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gui</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib.backends.backend_tkagg</span> <span class="kn">import</span> <span class="n">FigureCanvasTkAgg</span>
+<span class="kn">import</span> <span class="nn">PySimpleGUI</span> <span class="k">as</span> <span class="nn">sg</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">readCsv_class</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">generateRate</span><span class="o">,</span> <span class="nn">reddit</span><span class="o">,</span> <span class="nn">twitter</span><span class="o">,</span> <span class="nn">scrapeCC</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># Theme/Design of the GUI</span>
+<span class="n">sg</span><span class="o">.</span><span class="n">ChangeLookAndFeel</span><span class="p">(</span><span class="s1">&#39;Dark Teal 12&#39;</span><span class="p">)</span>
+
+<span class="n">month</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Jan&quot;</span><span class="p">,</span> <span class="s2">&quot;Feb&quot;</span><span class="p">,</span> <span class="s2">&quot;Mar&quot;</span><span class="p">,</span> <span class="s2">&quot;Apr&quot;</span><span class="p">,</span> <span class="s2">&quot;May&quot;</span><span class="p">,</span> <span class="s2">&quot;Jun&quot;</span><span class="p">,</span> <span class="s2">&quot;Jul&quot;</span><span class="p">,</span> <span class="s2">&quot;Aug&quot;</span><span class="p">,</span> <span class="s2">&quot;Sep&quot;</span><span class="p">,</span> <span class="s2">&quot;Oct&quot;</span><span class="p">,</span> <span class="s2">&quot;Nov&quot;</span><span class="p">,</span> <span class="s2">&quot;Dec&quot;</span><span class="p">]</span>
+
+<span class="c1"># File name required for the GUI</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MonthlyRate.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;DailyRate.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;exchangeRate.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;tweets.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;forex.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;reddit.csv&#39;</span><span class="p">]</span>
+
+
+<span class="c1"># Generate the value for the x-axis</span>
+<div class="viewcode-block" id="x_value"><a class="viewcode-back" href="../docs/gui.html#gui.x_value">[docs]</a><span class="k">def</span> <span class="nf">x_value</span><span class="p">():</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;MonthlyRate.csv&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">:]:</span>
+        <span class="n">name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">name</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<span class="c1"># Draw of the graph</span>
+<div class="viewcode-block" id="draw_figure"><a class="viewcode-back" href="../docs/gui.html#gui.draw_figure">[docs]</a><span class="k">def</span> <span class="nf">draw_figure</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">figure</span><span class="p">):</span>
+    <span class="n">figure_canvas_agg</span> <span class="o">=</span> <span class="n">FigureCanvasTkAgg</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">canvas</span><span class="p">)</span>
+    <span class="n">figure_canvas_agg</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">figure_canvas_agg</span><span class="o">.</span><span class="n">get_tk_widget</span><span class="p">()</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">figure_canvas_agg</span></div>
+
+
+<span class="c1"># Delete the graph from the GUI</span>
+<div class="viewcode-block" id="delete_figure_agg"><a class="viewcode-back" href="../docs/gui.html#gui.delete_figure_agg">[docs]</a><span class="k">def</span> <span class="nf">delete_figure_agg</span><span class="p">(</span><span class="n">figure_agg</span><span class="p">):</span>
+    <span class="n">figure_agg</span><span class="o">.</span><span class="n">get_tk_widget</span><span class="p">()</span><span class="o">.</span><span class="n">forget</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="gui_interface"><a class="viewcode-back" href="../docs/gui.html#gui.gui_interface">[docs]</a><span class="k">def</span> <span class="nf">gui_interface</span><span class="p">():</span>
+    <span class="c1"># try to get all the currency code out of the file</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">currency</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">currency_option</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="c1"># Set drop down list as None</span>
+        <span class="n">currency</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;None&quot;</span><span class="p">]</span>
+    <span class="c1"># Define the window&#39;s contents</span>
+    <span class="c1"># Left Side of the GUI</span>
+    <span class="n">layout_left</span> <span class="o">=</span> <span class="p">[[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s1">&#39;Report&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;Any 15 underline&#39;</span><span class="p">)],</span>
+                   <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s1">&#39;Extract Data&#39;</span><span class="p">)],</span>
+                   <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;Select Currency: &quot;</span><span class="p">),</span>
+                    <span class="n">sg</span><span class="o">.</span><span class="n">Combo</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">values</span><span class="o">=</span><span class="n">currency</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;currency_choice&#39;</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                             <span class="n">default_value</span><span class="o">=</span><span class="n">currency</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s1">&#39;Search&#39;</span><span class="p">)],</span>
+                   <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;current&#39;</span><span class="p">)],</span>
+                   <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">)],</span>
+                   <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">)],</span>
+                   <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;avg&#39;</span><span class="p">)],</span>
+                   <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;buy&#39;</span><span class="p">)],</span>
+                   <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Canvas</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;graph&quot;</span><span class="p">)]]</span>
+    <span class="c1"># Right side of the GUI</span>
+    <span class="n">layout_right</span> <span class="o">=</span> <span class="p">[[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s1">&#39;News&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;Any 15 underline&#39;</span><span class="p">)],</span>
+                    <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;Select Month: &quot;</span><span class="p">),</span>
+                     <span class="n">sg</span><span class="o">.</span><span class="n">Combo</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">values</span><span class="o">=</span><span class="n">month</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;month_choice&#39;</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                     <span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">button_text</span><span class="o">=</span><span class="s1">&#39;Find&#39;</span><span class="p">,</span> <span class="n">disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;find&#39;</span><span class="p">)],</span>
+                    <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">MLine</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;news&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)]]</span>
+
+    <span class="n">layout</span> <span class="o">=</span> <span class="p">[[</span><span class="n">sg</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">layout_left</span><span class="p">,</span> <span class="n">element_justification</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">vertical_alignment</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">),</span> <span class="n">sg</span><span class="o">.</span><span class="n">VSeperator</span><span class="p">(),</span>
+               <span class="n">sg</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">layout_right</span><span class="p">,</span> <span class="n">element_justification</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">vertical_alignment</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">)]]</span>
+
+    <span class="n">window</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="n">Window</span><span class="p">(</span><span class="s1">&#39;Currency Report&#39;</span><span class="p">,</span> <span class="n">layout</span><span class="p">,</span> <span class="n">resizable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+    <span class="n">figure_agg</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Display and interact with the Window using an Event Loop</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">event</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="c1"># See if user wants to quit or window was closed</span>
+        <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="n">sg</span><span class="o">.</span><span class="n">WINDOW_CLOSED</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="c1"># Extract data button clicked; Generate the necessary report</span>
+        <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="s1">&#39;Extract Data&#39;</span><span class="p">:</span>
+            <span class="c1"># Call for the python file to generate report</span>
+            <span class="n">sg</span><span class="o">.</span><span class="n">popup_non_blocking</span><span class="p">(</span><span class="s1">&#39;Extracting monthly currency exchange rate data. Please wait. </span><span class="se">\n</span><span class="s1">ETA: 30s&#39;</span><span class="p">,</span>
+                                  <span class="n">button_type</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">generateRate</span><span class="o">.</span><span class="n">generateMonthlyRate</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Time taken for monthly exchange rate data: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+
+            <span class="n">sg</span><span class="o">.</span><span class="n">popup_non_blocking</span><span class="p">(</span><span class="s1">&#39;Extracting daily currency exchange rate data. Please wait. </span><span class="se">\n</span><span class="s1">ETA: 3 mins&#39;</span><span class="p">,</span>
+                                  <span class="n">button_type</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">generateRate</span><span class="o">.</span><span class="n">generateDailyRate</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Time taken for exchange rate data: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+
+            <span class="n">sg</span><span class="o">.</span><span class="n">popup_non_blocking</span><span class="p">(</span><span class="s1">&#39;Extracting best currency exchange location data. Please wait. </span><span class="se">\n</span><span class="s1">ETA: 1 min&#39;</span><span class="p">,</span>
+                                  <span class="n">button_type</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">scrapeCC</span><span class="o">.</span><span class="n">scrape</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Time taken for location data: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+
+            <span class="n">sg</span><span class="o">.</span><span class="n">popup_non_blocking</span><span class="p">(</span><span class="s1">&#39;Extracting twitter data. Please wait. </span><span class="se">\n</span><span class="s1">ETA: 2 min&#39;</span><span class="p">,</span> <span class="n">button_type</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">twitter</span><span class="o">.</span><span class="n">scrape_tweet</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Time taken for twitter data: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+
+            <span class="n">sg</span><span class="o">.</span><span class="n">popup_non_blocking</span><span class="p">(</span><span class="s1">&#39;Extracting reddit data. Please wait. </span><span class="se">\n</span><span class="s1">ETA: 2 min&#39;</span><span class="p">,</span> <span class="n">button_type</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">reddit</span><span class="o">.</span><span class="n">scrape_reddit</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Time taken for reddit data: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Update the combo box dropdown list</span>
+            <span class="n">currency</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">currency_option</span><span class="p">()</span>
+            <span class="n">window</span><span class="p">[</span><span class="s1">&#39;currency_choice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">currency</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">set_to_index</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># Inform user that the data extraction is completed</span>
+            <span class="n">sg</span><span class="o">.</span><span class="n">popup</span><span class="p">(</span><span class="s2">&quot;Data extracted&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Search button clicked; Search for the information of the currency</span>
+        <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="s1">&#39;Search&#39;</span><span class="p">:</span>
+            <span class="c1"># Clear the previous graph</span>
+            <span class="k">if</span> <span class="n">figure_agg</span><span class="p">:</span>
+                <span class="n">delete_figure_agg</span><span class="p">(</span><span class="n">figure_agg</span><span class="p">)</span>
+            <span class="c1"># Clear the new sector</span>
+            <span class="n">window</span><span class="o">.</span><span class="n">FindElement</span><span class="p">(</span><span class="s1">&#39;news&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Update</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">window</span><span class="p">[</span><span class="s2">&quot;month_choice&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">window</span><span class="p">[</span><span class="s2">&quot;find&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="c1"># Get the selected currency code</span>
+            <span class="n">option</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;currency_choice&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+                <span class="n">sg</span><span class="o">.</span><span class="n">popup</span><span class="p">(</span><span class="s2">&quot;No Data. Please extract data&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Retrieve the information by calling ReadCSV class to read the csv</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">get_current</span><span class="p">()</span>
+                <span class="n">maximum</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">get_max</span><span class="p">()</span>
+                <span class="n">minimum</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">get_min</span><span class="p">()</span>
+                <span class="n">avg</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">get_avg</span><span class="p">()</span>
+                <span class="n">location</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">buy</span><span class="p">()</span>
+                <span class="n">percent</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">analyse_reddit</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">percent</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">percent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">percent_msg</span> <span class="o">=</span> <span class="s2">&quot;NIL&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">percent_msg</span> <span class="o">=</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;% </span><span class="se">\u2191</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+                <span class="c1"># Display out the value</span>
+                <span class="n">window</span><span class="p">[</span><span class="s1">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;Current rate: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">percent_msg</span><span class="p">)</span>
+                <span class="n">window</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;Maximum rate: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">maximum</span><span class="p">))</span>
+                <span class="n">window</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;Minimum rate: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">minimum</span><span class="p">))</span>
+                <span class="n">window</span><span class="p">[</span><span class="s1">&#39;avg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;Average rate: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">avg</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">window</span><span class="p">[</span><span class="s1">&#39;buy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">window</span><span class="p">[</span><span class="s1">&#39;buy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;Best Location to buy: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span>
+                                         <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                <span class="n">x</span> <span class="o">=</span> <span class="n">x_value</span><span class="p">()</span>
+                <span class="c1"># Get the data for y-axis of the graph</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">past_record</span><span class="p">()</span>
+                <span class="n">fig</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="mi">01</span><span class="p">)</span>
+                <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+                <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;TkAgg&quot;</span><span class="p">)</span>
+                <span class="c1"># Generate out the graph</span>
+                <span class="n">figure_agg</span> <span class="o">=</span> <span class="n">draw_figure</span><span class="p">(</span><span class="n">window</span><span class="p">[</span><span class="s2">&quot;graph&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">TKCanvas</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+
+        <span class="c1"># Find button clicked; generate out the relevant news about the currency for the month</span>
+        <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="s1">&#39;find&#39;</span><span class="p">:</span>
+            <span class="n">option</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;currency_choice&#39;</span><span class="p">]</span>
+            <span class="n">month_selected</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;month_choice&#39;</span><span class="p">]</span>
+            <span class="n">window</span><span class="o">.</span><span class="n">FindElement</span><span class="p">(</span><span class="s1">&#39;news&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Update</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="c1"># Get twitter and reddit news</span>
+            <span class="n">tweets</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">read_tweets</span><span class="p">(</span><span class="n">month_selected</span><span class="p">)</span>
+            <span class="n">reddit_posts</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">reddit_dict</span><span class="p">(</span><span class="n">month_selected</span><span class="p">)</span>
+            <span class="c1"># If there is no news for the month; display out &quot;No News&quot;</span>
+            <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">tweets</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="n">reddit_posts</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="n">window</span><span class="p">[</span><span class="s1">&#39;news&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;No News&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tweets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">window</span><span class="p">[</span><span class="s1">&#39;news&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span>
+                    <span class="n">window</span><span class="p">[</span><span class="s1">&#39;news&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">reddit_posts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">window</span><span class="p">[</span><span class="s1">&#39;news&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span>
+                    <span class="n">window</span><span class="p">[</span><span class="s1">&#39;news&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">figure_agg</span><span class="p">:</span>
+                <span class="n">delete_figure_agg</span><span class="p">(</span><span class="n">figure_agg</span><span class="p">)</span>
+
+            <span class="c1"># Get the data for both x-axis and y-axis of the graph</span>
+            <span class="n">tempX</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">readX</span><span class="p">(</span><span class="n">month_selected</span><span class="p">)</span>
+            <span class="n">tempY</span> <span class="o">=</span> <span class="n">readCsv_class</span><span class="o">.</span><span class="n">ReadCSV</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">pastDaily_record</span><span class="p">(</span><span class="n">month_selected</span><span class="p">)</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="mi">01</span><span class="p">)</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+            <span class="c1"># plotting the line graph for daily rate</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tempX</span><span class="p">,</span> <span class="n">tempY</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+            <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;TkAgg&quot;</span><span class="p">)</span>
+            <span class="c1"># Generate out the graph</span>
+            <span class="n">figure_agg</span> <span class="o">=</span> <span class="n">draw_figure</span><span class="p">(</span><span class="n">window</span><span class="p">[</span><span class="s2">&quot;graph&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">TKCanvas</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+    <span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># Check if file exist</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">sg</span><span class="o">.</span><span class="n">popup</span><span class="p">(</span><span class="s2">&quot;Data not being extracted. Please extract data. </span><span class="se">\n</span><span class="s2">It will take about 10-15 minutes&quot;</span><span class="p">)</span>
+    <span class="n">gui_interface</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, 1009 P3.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

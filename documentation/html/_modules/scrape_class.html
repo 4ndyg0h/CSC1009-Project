@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>scrape_class &mdash; ExchangeRate API  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ExchangeRate API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ExchangeRate API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>scrape_class</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scrape_class</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.keys</span> <span class="kn">import</span> <span class="n">Keys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">praw</span>
+<span class="kn">import</span> <span class="nn">lxml</span>
+
+
+<div class="viewcode-block" id="Scape"><a class="viewcode-back" href="../docs/scrape_class.html#scrape_class.Scape">[docs]</a><span class="k">class</span> <span class="nc">Scape</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A class to represent scrape data.</span>
+
+<span class="sd">        ...</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        url : str</span>
+<span class="sd">            webpage to scrape</span>
+
+<span class="sd">        Methods</span>
+<span class="sd">        -------</span>
+<span class="sd">        xrate_data():</span>
+<span class="sd">            Return scrape data of all the currency rate from x-rates.com</span>
+<span class="sd">        currencyCode():</span>
+<span class="sd">            Return scrape data of the currency and code from currencysystem.com/codes/</span>
+<span class="sd">        tweets(sample):</span>
+<span class="sd">            Return scrape tweets and date</span>
+<span class="sd">        reddit():</span>
+<span class="sd">            Return the reddit account information to allow search</span>
+<span class="sd">        cashchanger():</span>
+<span class="sd">            Return the currency code, highest sell price and href link from cashchanger.co/singapore#buyrates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Constructs all the necessary attributes for the scrape object.</span>
+
+<span class="sd">                Parameters</span>
+<span class="sd">                ----------</span>
+<span class="sd">                    url : str</span>
+<span class="sd">                        link to scrape the data from</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+
+<div class="viewcode-block" id="Scape.xrate_data"><a class="viewcode-back" href="../docs/scrape_class.html#scrape_class.Scape.xrate_data">[docs]</a>    <span class="k">def</span> <span class="nf">xrate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return the scrape the data from x-rates</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                exchange_rate (dictionary) : Dictionary of the currency name and rate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">exchange_rate</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Get the element of the webpage</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+        <span class="c1"># Search for the relevant class</span>
+        <span class="n">html_data</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;tablesorter ratesTable&#39;</span><span class="p">})</span>
+        <span class="n">table_data</span> <span class="o">=</span> <span class="n">html_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tbody&#39;</span><span class="p">)</span>
+        <span class="n">currency_info</span> <span class="o">=</span> <span class="n">table_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)</span>
+        <span class="c1"># Loop through the data to get the currency name and rate</span>
+        <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">currency_info</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">rate</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;rtRates&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">exchange_rate</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">rate</span>
+        <span class="k">return</span> <span class="n">exchange_rate</span></div>
+
+<div class="viewcode-block" id="Scape.currencyCode"><a class="viewcode-back" href="../docs/scrape_class.html#scrape_class.Scape.currencyCode">[docs]</a>    <span class="k">def</span> <span class="nf">currencyCode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return the currency name and the corresponding code</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                code_dict (dictionary): Dictionary of it currency name and currency code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># currency name and currency code</span>
+        <span class="n">code_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Bruneian Dollar&#39;</span><span class="p">:</span> <span class="s1">&#39;BND&#39;</span><span class="p">,</span> <span class="s1">&#39;Euro&#39;</span><span class="p">:</span> <span class="s1">&#39;EUR&#39;</span><span class="p">,</span> <span class="s1">&#39;Hong Kong Dollar&#39;</span><span class="p">:</span> <span class="s1">&#39;HKD&#39;</span><span class="p">,</span> <span class="s1">&#39;Israeli Shekel&#39;</span><span class="p">:</span> <span class="s1">&#39;ILS&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;Kazakhstani Tenge&#39;</span><span class="p">:</span> <span class="s1">&#39;KZT&#39;</span><span class="p">,</span> <span class="s1">&#39;Mauritian Rupee&#39;</span><span class="p">:</span> <span class="s1">&#39;MUR&#39;</span><span class="p">,</span> <span class="s1">&#39;Qatari Riyal&#39;</span><span class="p">:</span> <span class="s1">&#39;QAR&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;Saudi Arabian Riyal&#39;</span><span class="p">:</span> <span class="s1">&#39;SAR&#39;</span><span class="p">,</span> <span class="s1">&#39;Sri Lankan Rupee&#39;</span><span class="p">:</span> <span class="s1">&#39;LKR&#39;</span><span class="p">,</span> <span class="s1">&#39;Trinidadian Dollar&#39;</span><span class="p">:</span> <span class="s1">&#39;TTD&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;Emirati Dirham&#39;</span><span class="p">:</span> <span class="s1">&#39;AED&#39;</span><span class="p">,</span> <span class="s1">&#39;Venezuelan Bolivar&#39;</span><span class="p">:</span> <span class="s1">&#39;VEF&#39;</span><span class="p">}</span>
+        <span class="c1"># Get the element of the webpage</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+        <span class="n">html_data</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">})</span>
+        <span class="n">currency_code</span> <span class="o">=</span> <span class="n">html_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">)</span>
+        <span class="c1"># Get the currency name and code</span>
+        <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">currency_code</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;194&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;41&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">code_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="n">code_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">code_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="n">code_dict</span></div>
+
+<div class="viewcode-block" id="Scape.tweets"><a class="viewcode-back" href="../docs/scrape_class.html#scrape_class.Scape.tweets">[docs]</a>    <span class="k">def</span> <span class="nf">tweets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return the tweets scraped out</span>
+
+<span class="sd">                Parameters</span>
+<span class="sd">                ----------</span>
+<span class="sd">                sample : int</span>
+<span class="sd">                    The number of tweets to be scrape out</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                tweet_dict (dictionary): Dictionary of tweets and posted date</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tweet_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Use of selenium to open chrome and load the page</span>
+        <span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">()</span>
+        <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">checker</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Check if the tweet reach the size expected</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">tweet_dict</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">sample</span><span class="p">:</span>
+            <span class="c1"># Get the element of the webpage</span>
+            <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">browser</span><span class="o">.</span><span class="n">page_source</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+            <span class="n">post</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s2">&quot;css-1dbjc4n r-j7yic r-qklmqi r-1adg3ll r-1ny4l3l&quot;</span><span class="p">})</span>
+            <span class="c1"># Check if the tweet remain the same</span>
+            <span class="k">if</span> <span class="n">checker</span> <span class="o">==</span> <span class="n">post</span><span class="p">:</span>
+                <span class="c1"># Scroll down the page</span>
+                <span class="n">html</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_element_by_css_selector</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">Keys</span><span class="o">.</span><span class="n">PAGE_DOWN</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">checker</span> <span class="o">=</span> <span class="n">post</span>
+                <span class="k">for</span> <span class="n">get_tweet</span> <span class="ow">in</span> <span class="n">post</span><span class="p">:</span>
+                    <span class="n">tweets</span> <span class="o">=</span> <span class="n">get_tweet</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
+                        <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s2">&quot;css-901oao r-18jsvk2 r-1qd0xha r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0&quot;</span><span class="p">})</span>
+                    <span class="n">post_date</span> <span class="o">=</span> <span class="n">get_tweet</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+                    <span class="c1"># Retrieve the tweet and post date</span>
+                    <span class="k">if</span> <span class="n">tweets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">tweet_text</span> <span class="o">=</span> <span class="n">tweets</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">tweet_text</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tweet_dict</span><span class="p">:</span>
+                            <span class="n">tweet_dict</span><span class="p">[</span><span class="n">tweet_text</span><span class="p">]</span> <span class="o">=</span> <span class="n">post_date</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+        <span class="n">browser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">tweet_dict</span></div>
+
+<div class="viewcode-block" id="Scape.reddit"><a class="viewcode-back" href="../docs/scrape_class.html#scrape_class.Scape.reddit">[docs]</a>    <span class="k">def</span> <span class="nf">reddit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return reddit authentication to allow reddit search and scrape</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                reddit (class) : class to allow reddit search and scrape</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reddit</span> <span class="o">=</span> <span class="n">praw</span><span class="o">.</span><span class="n">Reddit</span><span class="p">(</span><span class="n">client_id</span><span class="o">=</span><span class="s1">&#39;xD6YrdOujyA8Aw&#39;</span><span class="p">,</span>
+                             <span class="n">client_secret</span><span class="o">=</span><span class="s1">&#39;2EODniKIdpLjhfQfY3Iw3VFjGDl5ng&#39;</span><span class="p">,</span>
+                             <span class="n">password</span><span class="o">=</span><span class="s1">&#39;praw.oop.1009&#39;</span><span class="p">,</span>
+                             <span class="n">user_agent</span><span class="o">=</span><span class="s1">&#39;hi&#39;</span><span class="p">,</span>
+                             <span class="n">username</span><span class="o">=</span><span class="s1">&#39;BottleWarm151&#39;</span>
+                             <span class="p">)</span>
+        <span class="k">return</span> <span class="n">reddit</span></div>
+
+<div class="viewcode-block" id="Scape.cashchanger"><a class="viewcode-back" href="../docs/scrape_class.html#scrape_class.Scape.cashchanger">[docs]</a>    <span class="k">def</span> <span class="nf">cashchanger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return the currency code, highest sell price and reference link to scrape more data</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                content (Multi-Dimension Array): Array that store all the currency array, highestsellPrice array and</span>
+<span class="sd">                reference link array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the element of the webpage</span>
+        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">((</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">),</span> <span class="s1">&#39;lxml&#39;</span><span class="p">)</span>
+        <span class="n">transaction</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;bestratecontent-sell&quot;</span><span class="p">)</span>
+        <span class="c1"># Find the class that store the currency</span>
+        <span class="n">currency</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">transaction</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;currency float-left pl-1&quot;</span><span class="p">)]</span>
+        <span class="c1"># Find the class that store the highest selling price</span>
+        <span class="n">highestsellPrice</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">transaction</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;text-rate-big text-center&quot;</span><span class="p">)]</span>
+        <span class="c1"># Find the reference link</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]))</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">transaction</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+        <span class="c1"># Store all in a multi-dimension array</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="p">[</span><span class="n">currency</span><span class="p">,</span> <span class="n">highestsellPrice</span><span class="p">,</span> <span class="n">links</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">content</span></div></div>
+
+<span class="c1"># print(Scape.__doc__)</span>
+<span class="c1"># help(Scape)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, 1009 P3.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

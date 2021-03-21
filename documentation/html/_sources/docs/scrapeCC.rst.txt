@@ -1,0 +1,7 @@
+scrapeCC module
+===============
+
+.. automodule:: scrapeCC
+   :members:
+   :undoc-members:
+   :show-inheritance:

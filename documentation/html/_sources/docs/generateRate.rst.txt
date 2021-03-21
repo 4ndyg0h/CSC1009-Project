@@ -1,0 +1,7 @@
+generateRate module
+===================
+
+.. automodule:: generateRate
+   :members:
+   :undoc-members:
+   :show-inheritance:

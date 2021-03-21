@@ -1,0 +1,7 @@
+scrape\_class module
+====================
+
+.. automodule:: scrape_class
+   :members:
+   :undoc-members:
+   :show-inheritance:

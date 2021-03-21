@@ -1,0 +1,597 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>readCsv_class &mdash; ExchangeRate API  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ExchangeRate API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ExchangeRate API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>readCsv_class</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for readCsv_class</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+
+<div class="viewcode-block" id="ReadCSV"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV">[docs]</a><span class="k">class</span> <span class="nc">ReadCSV</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A class to read csv file.</span>
+
+<span class="sd">        ...</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        choice : str</span>
+<span class="sd">            the currency code to read from</span>
+
+
+<span class="sd">        Methods</span>
+<span class="sd">        -------</span>
+<span class="sd">        currency_option():</span>
+<span class="sd">            Return all the currency code</span>
+<span class="sd">        get_current():</span>
+<span class="sd">            Return the current currency rate of the choice read from csv file generated</span>
+<span class="sd">        get_max():</span>
+<span class="sd">            Return the maximum rate of the choice from csv file generated</span>
+<span class="sd">        get_min():</span>
+<span class="sd">            Return the minimum rate of the choice from csv file generated</span>
+<span class="sd">        get_avg():</span>
+<span class="sd">            Return the average rate of the choice from csv file generated</span>
+<span class="sd">        buy():</span>
+<span class="sd">            Return the best location to buy the currency with the rate.</span>
+<span class="sd">        past_record():</span>
+<span class="sd">            Return all the record of the currency</span>
+<span class="sd">        read_tweets(month):</span>
+<span class="sd">            Return the tweet based on the month and choice</span>
+<span class="sd">        reddit_dict(month):</span>
+<span class="sd">            Return the reddit post based on the month and choice</span>
+<span class="sd">        analyse_reddit():</span>
+<span class="sd">            Return the percentage of the currency raising</span>
+<span class="sd">        pastDailyRecord(month):</span>
+<span class="sd">            Return all the daily record of the rate based on the currency choice</span>
+<span class="sd">        readX(month):</span>
+<span class="sd">            Return the list of the date based on selected month</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Constructs the necessary attributes for ReadCSV object.</span>
+
+<span class="sd">                Parameters</span>
+<span class="sd">                ----------</span>
+<span class="sd">                    choice : str</span>
+<span class="sd">                        currency code selected</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="o">=</span> <span class="n">choice</span>
+
+<div class="viewcode-block" id="ReadCSV.currency_option"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.currency_option">[docs]</a>    <span class="k">def</span> <span class="nf">currency_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return all the currecny code in the csv file</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                currency (array): Array of the currency code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">currency</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;MonthlyRate.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="n">currency</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;CurrencyCode&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">currency</span></div>
+
+<div class="viewcode-block" id="ReadCSV.get_current"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.get_current">[docs]</a>    <span class="k">def</span> <span class="nf">get_current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return the current rate of the currency choice</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                current (float) : Float of the current rate rounded up to 4 decimal places</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;MonthlyRate.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;CurrencyCode&#39;</span><span class="p">]:</span>
+                    <span class="n">current</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Current Rate&quot;</span><span class="p">]</span>
+        <span class="n">csvfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c1"># Round the value to 4 d.p.</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">current</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">current</span></div>
+
+<div class="viewcode-block" id="ReadCSV.get_max"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.get_max">[docs]</a>    <span class="k">def</span> <span class="nf">get_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return the maximum rate of the currency choice</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                max (float): Float of the maximum rate rounded up to 4 decimal places</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;MonthlyRate.csv&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">CurrencyCode</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="p">]</span>
+        <span class="n">maximum</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Round the value to 4 d.p.</span>
+        <span class="n">maximum</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">maximum</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">maximum</span></div>
+
+<div class="viewcode-block" id="ReadCSV.get_min"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.get_min">[docs]</a>    <span class="k">def</span> <span class="nf">get_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return the minimum rate of the currency choice</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                min (float): Float of the minimum rate rounded up to 4 decimal places</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;MonthlyRate.csv&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">CurrencyCode</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="p">]</span>
+        <span class="n">minimum</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Round the value to 4 d.p.</span>
+        <span class="n">minimum</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">minimum</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">minimum</span></div>
+
+<div class="viewcode-block" id="ReadCSV.get_avg"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.get_avg">[docs]</a>    <span class="k">def</span> <span class="nf">get_avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return the average rate of the currency choice</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                mean (float): Float of the average rate rounded up to 4 decimal places</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;MonthlyRate.csv&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">CurrencyCode</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="p">]</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Round the value to 4 d.p.</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">mean</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mean</span></div>
+
+<div class="viewcode-block" id="ReadCSV.buy"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.buy">[docs]</a>    <span class="k">def</span> <span class="nf">buy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return the best location to buy the currency and the rate.</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                info (array): Array of the location and the rate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">csv_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;exchangeRate.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
+        <span class="n">pointer</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="p">:</span>
+                    <span class="n">pointer</span> <span class="o">=</span> <span class="n">row</span>
+                    <span class="k">break</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">pointer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">prices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pointer</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prices</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">prices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">:</span>
+                    <span class="n">best</span> <span class="o">=</span> <span class="n">prices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">pointer</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="n">counter</span><span class="p">]</span>
+            <span class="n">price</span> <span class="o">=</span> <span class="n">best</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="p">[</span><span class="n">location</span><span class="p">,</span> <span class="n">price</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">info</span>
+        <span class="n">csv_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ReadCSV.past_record"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.past_record">[docs]</a>    <span class="k">def</span> <span class="nf">past_record</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return all the record of the rate based on the currency choice</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                record (array): Array of all the record</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;MonthlyRate.csv&quot;</span><span class="p">)</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;CurrencyCode&quot;</span><span class="p">]</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">code</span><span class="p">:</span>
+            <span class="c1"># Get the row of the currency choice</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">position</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">position</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># Get the record from column 2 onward and reversed the order</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">:])[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">record</span></div>
+
+<div class="viewcode-block" id="ReadCSV.read_tweets"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.read_tweets">[docs]</a>    <span class="k">def</span> <span class="nf">read_tweets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">month</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return tweets and post date based on the currency choice and month</span>
+
+<span class="sd">                Parameters</span>
+<span class="sd">                ----------</span>
+<span class="sd">                month : str</span>
+<span class="sd">                    to filter out the tweet based on the month</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                tweet_dict (dictionary) : Dictionary of the tweets and post date after filtering</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tweet_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;tweets.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="c1"># Check if the post date is same as the month</span>
+                <span class="k">if</span> <span class="n">month</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;post_date&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="s2">&quot;2020&quot;</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;post_date&#39;</span><span class="p">]:</span>
+                    <span class="c1"># Check if the tweets is relevant to the selected currency</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;tweets&#39;</span><span class="p">]:</span>
+                        <span class="c1"># Add the tweet with the date to the dictionary</span>
+                        <span class="n">tweet_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;tweets&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;post_date&#39;</span><span class="p">]</span>
+        <span class="n">csvfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">tweet_dict</span></div>
+
+<div class="viewcode-block" id="ReadCSV.reddit_dict"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.reddit_dict">[docs]</a>    <span class="k">def</span> <span class="nf">reddit_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">month</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return top 3 reddit news posts and post date based on the currency choice and month</span>
+
+<span class="sd">                Parameters</span>
+<span class="sd">                ----------</span>
+<span class="sd">                month : str</span>
+<span class="sd">                    to filter out the tweet based on the month</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                reddit_dict (dictionary) : Dictionary of the reddit posts and post date after filtering</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reddit_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;reddit.csv&#39;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">reddit_dict</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="c1"># Check if the post date is same as the month</span>
+                    <span class="k">if</span> <span class="n">month</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="s2">&quot;2020&quot;</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]:</span>
+                        <span class="c1"># Check if the posts is relevant to the selected currency</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Currency&#39;</span><span class="p">]:</span>
+                            <span class="c1"># Add the post with the date to the dictionary</span>
+                            <span class="n">reddit_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">reddit_dict</span></div>
+
+<div class="viewcode-block" id="ReadCSV.analyse_reddit"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.analyse_reddit">[docs]</a>    <span class="k">def</span> <span class="nf">analyse_reddit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Analyse reddit posts and determine the chances of the currency rate rising</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                percentage (float): Float of the percentage of the currency rising in 2 decimal places</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">currency_codes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ARS&#39;</span><span class="p">,</span> <span class="s1">&#39;BHD&#39;</span><span class="p">,</span> <span class="s1">&#39;BWP&#39;</span><span class="p">,</span> <span class="s1">&#39;BRL&#39;</span><span class="p">,</span> <span class="s1">&#39;BND&#39;</span><span class="p">,</span> <span class="s1">&#39;BGN&#39;</span><span class="p">,</span> <span class="s1">&#39;CLP&#39;</span><span class="p">,</span> <span class="s1">&#39;CNY&#39;</span><span class="p">,</span> <span class="s1">&#39;COP&#39;</span><span class="p">,</span> <span class="s1">&#39;HRK&#39;</span><span class="p">,</span> <span class="s1">&#39;CZK&#39;</span><span class="p">,</span> <span class="s1">&#39;DKK&#39;</span><span class="p">,</span> <span class="s1">&#39;HKD&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;ISK&#39;</span><span class="p">,</span> <span class="s1">&#39;IDR&#39;</span><span class="p">,</span> <span class="s1">&#39;IRR&#39;</span><span class="p">,</span> <span class="s1">&#39;ILS&#39;</span><span class="p">,</span> <span class="s1">&#39;KZT&#39;</span><span class="p">,</span> <span class="s1">&#39;KRW&#39;</span><span class="p">,</span> <span class="s1">&#39;KWD&#39;</span><span class="p">,</span> <span class="s1">&#39;LYD&#39;</span><span class="p">,</span> <span class="s1">&#39;MYR&#39;</span><span class="p">,</span> <span class="s1">&#39;MUR&#39;</span><span class="p">,</span> <span class="s1">&#39;MXN&#39;</span><span class="p">,</span> <span class="s1">&#39;NPR&#39;</span><span class="p">,</span> <span class="s1">&#39;NZD&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;NOK&#39;</span><span class="p">,</span> <span class="s1">&#39;OMR&#39;</span><span class="p">,</span> <span class="s1">&#39;PKR&#39;</span><span class="p">,</span> <span class="s1">&#39;PHP&#39;</span><span class="p">,</span> <span class="s1">&#39;PLN&#39;</span><span class="p">,</span> <span class="s1">&#39;QAR&#39;</span><span class="p">,</span> <span class="s1">&#39;RON&#39;</span><span class="p">,</span> <span class="s1">&#39;RUB&#39;</span><span class="p">,</span> <span class="s1">&#39;SAR&#39;</span><span class="p">,</span> <span class="s1">&#39;ZAR&#39;</span><span class="p">,</span> <span class="s1">&#39;LKR&#39;</span><span class="p">,</span> <span class="s1">&#39;SEK&#39;</span><span class="p">,</span> <span class="s1">&#39;CHF&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;TWD&#39;</span><span class="p">,</span> <span class="s1">&#39;THB&#39;</span><span class="p">,</span> <span class="s1">&#39;TTD&#39;</span><span class="p">,</span> <span class="s1">&#39;TRY&#39;</span><span class="p">,</span> <span class="s1">&#39;AED&#39;</span><span class="p">,</span> <span class="s1">&#39;VEF&#39;</span><span class="p">,</span> <span class="s1">&#39;AUD&#39;</span><span class="p">,</span> <span class="s1">&#39;CAD&#39;</span><span class="p">,</span> <span class="s1">&#39;EUR&#39;</span><span class="p">,</span> <span class="s1">&#39;HUF&#39;</span><span class="p">,</span> <span class="s1">&#39;INR&#39;</span><span class="p">,</span> <span class="s1">&#39;JPY&#39;</span><span class="p">,</span> <span class="s1">&#39;GBP&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;USD&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Word to determine the post</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;all time high&#39;</span><span class="p">,</span> <span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="s1">&#39;high&#39;</span><span class="p">,</span> <span class="s1">&#39;back up&#39;</span><span class="p">,</span> <span class="s1">&#39;peak&#39;</span><span class="p">,</span> <span class="s1">&#39;bounding off&#39;</span><span class="p">,</span> <span class="s1">&#39;playing well&#39;</span><span class="p">,</span> <span class="s1">&#39;drop&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;skyrocket&#39;</span><span class="p">]</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">today</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">thisMonth</span> <span class="o">=</span> <span class="n">today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%b&quot;</span><span class="p">)</span>
+        <span class="n">lastMonth</span> <span class="o">=</span> <span class="p">(</span><span class="n">first</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%b&quot;</span><span class="p">)</span>
+        <span class="c1"># Reddit posts from this month and last month are accounted for analysis</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="ow">in</span> <span class="n">currency_codes</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;forex.csv&#39;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Currency&#39;</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="n">thisMonth</span> <span class="ow">or</span> <span class="n">lastMonth</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]:</span>
+                            <span class="c1"># Count the total number of post scraped</span>
+                            <span class="n">total</span> <span class="o">+=</span> <span class="mi">1</span>
+                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+                                <span class="c1"># If the post contain the word, increase the counter</span>
+                                <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Title&quot;</span><span class="p">]:</span>
+                                    <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># Calculate the percentage</span>
+        <span class="k">if</span> <span class="n">counter</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">percentage</span> <span class="o">=</span> <span class="p">(</span><span class="n">counter</span> <span class="o">/</span> <span class="n">total</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+            <span class="n">percentage</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">percentage</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">percentage</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="ReadCSV.pastDaily_record"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.pastDaily_record">[docs]</a>    <span class="k">def</span> <span class="nf">pastDaily_record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">month</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                Return all the record of the rate based on the currency choice</span>
+
+<span class="sd">                Parameters</span>
+<span class="sd">                ----------</span>
+<span class="sd">                month : str</span>
+<span class="sd">                    to filter out the daily rate based on the month</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                -------</span>
+<span class="sd">                record (array): Array of the historical rate for the selected month</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;DailyRate.csv&quot;</span><span class="p">)</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;CurrencyCode&quot;</span><span class="p">]</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">code</span><span class="p">:</span>
+            <span class="c1"># Get the row of the currency choice</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">position</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">position</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Get first and last index from class Index</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Index</span><span class="p">()</span>
+        <span class="n">index1</span><span class="p">,</span> <span class="n">index2</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">getIndex</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
+
+        <span class="c1"># Get the data from index to index of that month and reversed the order</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">index1</span><span class="p">:</span><span class="n">index2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">record</span></div>
+
+<div class="viewcode-block" id="ReadCSV.readX"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.ReadCSV.readX">[docs]</a>    <span class="k">def</span> <span class="nf">readX</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">month</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return the list of the date based on selected month</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            month : str</span>
+<span class="sd">                to filter out the column name based on the month</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            name (array): Array of the date for the selected month</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;DailyRate.csv&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Get first and last index from class Index</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Index</span><span class="p">()</span>
+        <span class="n">index1</span><span class="p">,</span> <span class="n">index2</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">getIndex</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Generate the value for the x-axis, date of the selected month</span>
+        <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">index1</span><span class="p">:</span><span class="n">index2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+            <span class="n">name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">name</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="Index"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.Index">[docs]</a><span class="k">class</span> <span class="nc">Index</span><span class="p">:</span>
+<div class="viewcode-block" id="Index.getIndex"><a class="viewcode-back" href="../docs/readCsv_class.html#readCsv_class.Index.getIndex">[docs]</a>    <span class="k">def</span> <span class="nf">getIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">month</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return the first index and last index of the column date based on selected month</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            data : array</span>
+<span class="sd">                list of dataset in csv file</span>
+
+<span class="sd">            month : str</span>
+<span class="sd">                to filter out the column name based on the month</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            index1 (int): first index of the same date of the month</span>
+<span class="sd">            index2 (int): last index of the same date of the month</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># get total number of columns containing in csv file</span>
+        <span class="n">numColumn</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;DailyRate.csv&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+            <span class="n">rate</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+
+            <span class="n">firstCol</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># return the first and last index of the selected month</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">numColumn</span><span class="p">):</span>
+                <span class="c1"># format date of column i.e. &quot;Jan&quot;</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">rate</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">datee</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%b&quot;</span><span class="p">)</span>
+
+                <span class="c1"># check if the date of the historical rates matches with the selected month</span>
+                <span class="k">if</span> <span class="n">month</span> <span class="o">==</span> <span class="n">datee</span><span class="p">:</span>
+                    <span class="n">temp</span> <span class="o">=</span> <span class="n">i</span>
+
+                    <span class="c1"># get the first index of the historical rates</span>
+                    <span class="k">if</span> <span class="n">firstCol</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">index1</span> <span class="o">=</span> <span class="n">i</span>
+                        <span class="n">firstCol</span> <span class="o">=</span> <span class="kc">False</span>
+
+                    <span class="c1"># get the last index of the historical rates</span>
+                    <span class="k">if</span> <span class="n">firstCol</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">temp</span> <span class="o">!=</span> <span class="n">prev</span><span class="p">:</span>
+                        <span class="n">index2</span> <span class="o">=</span> <span class="n">i</span>
+
+                    <span class="n">prev</span> <span class="o">=</span> <span class="n">temp</span>
+        <span class="n">csvfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">index1</span><span class="p">,</span> <span class="n">index2</span></div></div>
+
+<span class="c1"># print(ReadCSV.__doc__)</span>
+<span class="c1"># help(ReadCSV)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, 1009 P3.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

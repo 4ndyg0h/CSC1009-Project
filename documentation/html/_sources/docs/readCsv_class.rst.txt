@@ -1,0 +1,7 @@
+readCsv\_class module
+=====================
+
+.. automodule:: readCsv_class
+   :members:
+   :undoc-members:
+   :show-inheritance:
