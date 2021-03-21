@@ -1,5 +1,6 @@
 # CSC1009-Project
 CSC1009 - Group Assignment
+
 Our team has designed a GUI application to analyse the essential information of the currency rates along with the past and real-time news.
 
 ## Install
